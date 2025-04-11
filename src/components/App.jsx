@@ -19,7 +19,7 @@ function App() {
       const response = await axios.get(
         `${
           import.meta.env.PROD
-            ? "https://brightcove-proxy.onrender.com/"
+            ? "https://brightcove-proxy.onrender.com"
             : "http://localhost:3000"
         }/videos`
       );
@@ -39,7 +39,7 @@ function App() {
       const response = await axios.get(
         `${
           import.meta.env.PROD
-            ? "https://brightcove-proxy.onrender.com/"
+            ? "https://brightcove-proxy.onrender.com"
             : "http://localhost:3000"
         }/videos/${id}`
       );
