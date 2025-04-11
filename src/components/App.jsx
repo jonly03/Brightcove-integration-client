@@ -16,7 +16,13 @@ function App() {
 
   const fetchVideos = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/videos");
+      const response = await axios.get(
+        `${
+          import.meta.env.PROD
+            ? "https://brightcove-proxy.onrender.com/"
+            : "http://localhost:3000"
+        }/videos`
+      );
       setVideos(response.data);
       setSearchedVideo(null);
       setError("");
@@ -30,7 +36,13 @@ function App() {
 
   const searchVideoById = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:3000/videos/${id}`);
+      const response = await axios.get(
+        `${
+          import.meta.env.PROD
+            ? "https://brightcove-proxy.onrender.com/"
+            : "http://localhost:3000"
+        }/videos/${id}`
+      );
       setSearchedVideo(response.data);
       setVideos([]);
       setError("");
