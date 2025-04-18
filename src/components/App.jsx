@@ -14,15 +14,19 @@ function App() {
     fetchVideos();
   }, []);
 
-  const fetchVideos = async () => {
+  const fetchVideos = async (query = null) => {
+    let path = "/videos";
+    if (query) {
+      path += `/search?q=${query}`;
+    }
+
+    const url = `${
+      import.meta.env.PROD
+        ? "https://brightcove-proxy.onrender.com"
+        : "http://localhost:3000"
+    }${path}`;
     try {
-      const response = await axios.get(
-        `${
-          import.meta.env.PROD
-            ? "https://brightcove-proxy.onrender.com"
-            : "http://localhost:3000"
-        }/videos`
-      );
+      const response = await axios.get(url);
       setVideos(response.data);
       setSearchedVideo(null);
       setError("");
@@ -34,30 +38,35 @@ function App() {
     }
   };
 
-  const searchVideoById = async (id) => {
-    try {
-      const response = await axios.get(
-        `${
-          import.meta.env.PROD
-            ? "https://brightcove-proxy.onrender.com"
-            : "http://localhost:3000"
-        }/videos/${id}`
-      );
-      setSearchedVideo(response.data);
-      setVideos([]);
-      setError("");
-    } catch (error) {
-      console.error("Error fetching video by ID:", error);
-      setError(`Video with ID "${id}" not found.`);
-      setSearchedVideo(null);
-      setVideos([]);
+  const searchVideoByIdOrQuery = async (idOrQuery) => {
+    if (!isNaN(idOrQuery.trim())) {
+      const id = idOrQuery.trim();
+      try {
+        const response = await axios.get(
+          `${
+            import.meta.env.PROD
+              ? "https://brightcove-proxy.onrender.com"
+              : "http://localhost:3000"
+          }/videos/${id}`
+        );
+        setSearchedVideo(response.data);
+        setVideos([]);
+        setError("");
+      } catch (error) {
+        console.error("Error fetching video by ID:", error);
+        setError(`Video with ID "${id}" not found.`);
+        setSearchedVideo(null);
+        setVideos([]);
+      }
+    } else {
+      fetchVideos(idOrQuery);
     }
   };
 
   return (
     <div className="container mt-4">
       <h1>Brightcove Integration POC</h1>
-      <SearchBar onSearch={searchVideoById} />
+      <SearchBar onSearch={searchVideoByIdOrQuery} />
 
       {error && <p className="text-danger">{error}</p>}
 
