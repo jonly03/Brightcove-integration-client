@@ -1,5 +1,6 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
 function VideoCard({ video }) {
   const playerUrl = `https://players.brightcove.net/${video.account_id}/obdhcLv77W_default/index.html?videoId=${video.id}`;
@@ -16,8 +17,17 @@ function VideoCard({ video }) {
             title={`Brightcove Player for ${video.name}`}
           />
         </div>
-        <Card.Text className="mt-2">ID: {video.id}</Card.Text>
-        {/* You can add more video details here */}
+        <Card.Subtitle className="mt-2">ID: {video.id}</Card.Subtitle>
+        {video.description && (
+          <Card.Text className="mt-2">
+            <strong>Description:</strong> {video.description}
+          </Card.Text>
+        )}
+        {video.long_description && (
+          <Card.Text className="mt-2">
+            <strong>Long Description:</strong> {video.long_description}
+          </Card.Text>
+        )}
       </Card.Body>
     </Card>
   );

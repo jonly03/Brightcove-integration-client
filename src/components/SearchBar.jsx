@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import { Form, FormControl, Button } from "react-bootstrap";
 
 function SearchBar({ onSearch }) {
-  const [videoId, setVideoId] = useState("");
+  const [query, setQuery] = useState("");
 
   const handleChange = (event) => {
-    setVideoId(event.target.value);
+    setQuery(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSearch(videoId);
-    setVideoId("");
+    onSearch(query);
+    setQuery("");
   };
 
   return (
     <Form className="mb-3" onSubmit={handleSubmit}>
       <FormControl
         type="text"
-        placeholder="Enter Video ID"
+        placeholder="Enter search term or video ID"
         className="mr-2"
-        value={videoId}
+        value={query}
         onChange={handleChange}
       />
       <Button type="submit">Search</Button>
