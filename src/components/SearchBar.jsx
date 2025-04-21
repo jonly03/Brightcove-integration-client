@@ -3,15 +3,11 @@ import { Form, FormControl, Button } from "react-bootstrap";
 
 function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
-
-  const handleChange = (event) => {
-    setQuery(event.target.value);
-  };
+  const [hasTextTracks, setHasTextTracks] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSearch(query);
-    setQuery("");
+    onSearch({ idOrQuery: query, hasTextTracks });
   };
 
   return (
@@ -21,7 +17,14 @@ function SearchBar({ onSearch }) {
         placeholder="Enter search term or video ID"
         className="mr-2"
         value={query}
-        onChange={handleChange}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <Form.Check // prettier-ignore
+        type="switch"
+        id="custom-switch"
+        label="Has Text Tracks"
+        checked={hasTextTracks}
+        onChange={(e) => setHasTextTracks(e.target.checked)}
       />
       <Button type="submit">Search</Button>
     </Form>

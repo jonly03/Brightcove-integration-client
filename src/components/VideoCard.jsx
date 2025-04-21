@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
 
 function VideoCard({ video }) {
   const playerUrl = `https://players.brightcove.net/${video.account_id}/obdhcLv77W_default/index.html?videoId=${video.id}`;
@@ -27,6 +28,28 @@ function VideoCard({ video }) {
           <Card.Text className="mt-2">
             <strong>Long Description:</strong> {video.long_description}
           </Card.Text>
+        )}
+        {video.text_tracks && video.text_tracks.length > 0 && (
+          <ListGroup className="mt-2">
+            <ListGroup.Item>
+              <strong>Text Tracks:</strong>
+            </ListGroup.Item>
+            {video.text_tracks.map((track) =>
+              track.sources.map((trackSource, index) => (
+                <ListGroup.Item key={index}>
+                  <Button variant="outline-info">
+                    <a
+                      href={trackSource.src}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {track.mime_type} ({track.srclang})
+                    </a>
+                  </Button>
+                </ListGroup.Item>
+              ))
+            )}
+          </ListGroup>
         )}
       </Card.Body>
     </Card>
