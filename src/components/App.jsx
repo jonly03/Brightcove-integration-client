@@ -11,13 +11,19 @@ function App() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchVideos();
+    fetchVideos({});
   }, []);
 
-  const fetchVideos = async (query = null) => {
+  const fetchVideos = async ({ query = null, hasTextTracks = false }) => {
     let path = "/videos";
-    if (query) {
-      path += `/search?q=${query}`;
+
+    if (query && query.length > 0) {
+      path += `/search?searchTerm=${query}`;
+    }
+
+    if (hasTextTracks) {
+      path += query ? "&" : "?";
+      path += "hasTextTracks=true";
     }
 
     const url = `${
@@ -38,16 +44,17 @@ function App() {
     }
   };
 
-  const searchVideoByIdOrQuery = async (idOrQuery) => {
-    if (!isNaN(idOrQuery.trim())) {
-      const id = idOrQuery.trim();
+  const searchVideoByIdOrQuery = async ({ idOrQuery, hasTextTracks }) => {
+    const searchTerm = idOrQuery.trim();
+    if (searchTerm && searchTerm.length > 0 && !isNaN(searchTerm)) {
+      // If the input is a number, treat it as a video ID
       try {
         const response = await axios.get(
           `${
             import.meta.env.PROD
               ? "https://brightcove-proxy.onrender.com"
               : "http://localhost:3000"
-          }/videos/${id}`
+          }/videos/${searchTerm}`
         );
         setSearchedVideo(response.data);
         setVideos([]);
@@ -59,7 +66,7 @@ function App() {
         setVideos([]);
       }
     } else {
-      fetchVideos(idOrQuery);
+      fetchVideos({ query: searchTerm, hasTextTracks });
     }
   };
 
