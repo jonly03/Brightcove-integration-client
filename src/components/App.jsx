@@ -18,7 +18,7 @@ function App() {
     let path = "/videos";
 
     if (query && query.length > 0) {
-      path += `/search?q=${query}`;
+      path += `/search?searchTerm=${query}`;
     }
 
     if (hasTextTracks) {
