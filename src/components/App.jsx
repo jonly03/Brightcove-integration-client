@@ -14,7 +14,11 @@ function App() {
     fetchVideos({});
   }, []);
 
-  const fetchVideos = async ({ query = null, hasTextTracks = false }) => {
+  const fetchVideos = async ({
+    query = null,
+    hasTextTracks = false,
+    hasDescription = false,
+  }) => {
     let path = "/videos";
 
     if (query && query.length > 0) {
@@ -24,6 +28,11 @@ function App() {
     if (hasTextTracks) {
       path += query ? "&" : "?";
       path += "hasTextTracks=true";
+    }
+
+    if (hasDescription) {
+      path += query || hasTextTracks ? "&" : "?";
+      path += "hasDescription=true";
     }
 
     const url = `${
@@ -44,7 +53,11 @@ function App() {
     }
   };
 
-  const searchVideoByIdOrQuery = async ({ idOrQuery, hasTextTracks }) => {
+  const searchVideoByIdOrQuery = async ({
+    idOrQuery,
+    hasTextTracks,
+    hasDescription,
+  }) => {
     const searchTerm = idOrQuery.trim();
     if (searchTerm && searchTerm.length > 0 && !isNaN(searchTerm)) {
       // If the input is a number, treat it as a video ID
@@ -66,7 +79,7 @@ function App() {
         setVideos([]);
       }
     } else {
-      fetchVideos({ query: searchTerm, hasTextTracks });
+      fetchVideos({ query: searchTerm, hasTextTracks, hasDescription });
     }
   };
 
