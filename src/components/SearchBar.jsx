@@ -45,7 +45,7 @@ function SearchBar({ onSearch, initialQuery }) {
     <Form className="mb-3" onSubmit={handleSubmit}>
       <FormControl
         type="text"
-        placeholder="Enter search term or tags (multiple tags should be comma separated) or Video ID"
+        placeholder="Enter search term or tags (multiple tags should be comma separated) or video ID"
         className="mr-2"
         value={query}
         onChange={(e) => {
