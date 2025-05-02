@@ -3,9 +3,11 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import Badge from "react-bootstrap/Badge";
+import Stack from "react-bootstrap/Stack";
 import { FaClipboard, FaClipboardCheck } from "react-icons/fa";
 
-function VideoCard({ video }) {
+function VideoCard({ video, handleTagClick }) {
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState("");
 
@@ -64,7 +66,8 @@ function VideoCard({ video }) {
             <Button
               variant={copySuccess.length > 0 ? "success" : "outline-warning"}
               size="sm"
-              text="Copy video URL"
+              title="Copy video URL to clipboard"
+              className="d-flex align-items-center"
               onClick={handleCopyToClipboard}
             >
               {copySuccess.length > 0 ? (
@@ -74,7 +77,29 @@ function VideoCard({ video }) {
               )}
             </Button>
           </div>
+          {video.tags && video.tags.length > 0 && (
+            <Card.Text>
+              <strong>Tags:</strong>
+            </Card.Text>
+          )}
         </div>
+
+        {video.tags && video.tags.length > 0 && (
+          <div className="flex flex-wrap">
+            {video.tags.map((tag, index) => (
+              <Badge
+                onClick={() => handleTagClick(tag)}
+                key={index}
+                bg={getRandomBadgeColor()}
+                className="me-1"
+                style={{ cursor: "pointer" }}
+                title={`Click to search for videos with tag: ${tag}`}
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
 
         {video.description && (
           <Card.Text className="mt-2">
@@ -111,6 +136,19 @@ function VideoCard({ video }) {
       </Card.Body>
     </Card>
   );
+}
+
+function getRandomBadgeColor() {
+  const colors = [
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "dark",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 
 export default VideoCard;
