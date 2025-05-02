@@ -69,7 +69,7 @@ function SearchBar({ onSearch, initialQuery }) {
           inline
           type="switch"
           id="custom-switch"
-          label="Search by name"
+          label="Search by title"
           checked={searchByName}
           onChange={(e) => {
             setSearchByName(e.target.checked);
@@ -101,7 +101,7 @@ function SearchBar({ onSearch, initialQuery }) {
           inline
           type="switch"
           id="custom-switch"
-          label="Has Description(s)"
+          label="Has description(s)"
           checked={hasDescription}
           onChange={(e) => {
             setHasDescription(e.target.checked);
@@ -129,7 +129,7 @@ function SearchBar({ onSearch, initialQuery }) {
           inline
           type="switch"
           id="custom-switch"
-          label="Has Text Tracks"
+          label="Has text tracks"
           checked={hasTextTracks}
           onChange={(e) => setHasTextTracks(e.target.checked)}
         />
