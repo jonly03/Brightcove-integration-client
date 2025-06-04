@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
 import Badge from "react-bootstrap/Badge";
-import Stack from "react-bootstrap/Stack";
+import LoadingSpinner from "./LoadingSpinner";
 import { FaClipboard, FaClipboardCheck } from "react-icons/fa";
 
 function VideoCard({ video, handleTagClick }) {
@@ -34,16 +33,7 @@ function VideoCard({ video, handleTagClick }) {
       <Card.Body>
         <Card.Title>{video.name}</Card.Title>
         <div className="embed-responsive embed-responsive-16by9">
-          {loading && (
-            <div
-              className="embed-responsive-item d-flex justify-content-center align-items-center"
-              style={{ height: "100%" }}
-            >
-              <Spinner animation="border" variant="primary">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-          )}
+          {loading && <LoadingSpinner />}
           <iframe
             className="embed-responsive-item"
             src={playerUrl}

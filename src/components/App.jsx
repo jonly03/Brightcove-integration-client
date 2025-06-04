@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import VideoList from "./VideoList";
 import VideoCard from "./VideoCard";
 import SearchBar from "./SearchBar";
+import LoadingSpinner from "./LoadingSpinner";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -10,6 +11,7 @@ function App() {
   const [searchedVideo, setSearchedVideo] = useState(null);
   const [error, setError] = useState("");
   const [initialQuery, setInitialQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchVideos({});
@@ -55,6 +57,7 @@ function App() {
     try {
       const response = await axios.get(url);
       setVideos(response.data);
+      setLoading(false);
       setSearchedVideo(null);
       setError("");
     } catch (error) {
@@ -66,6 +69,7 @@ function App() {
   };
 
   const searchVideoByIdOrQuery = async ({ idOrQuery, filters }) => {
+    setLoading(true);
     const searchTerm = idOrQuery.trim();
     if (searchTerm && searchTerm.length > 0 && !isNaN(searchTerm)) {
       // If the input is a number, treat it as a video ID
@@ -78,6 +82,7 @@ function App() {
           }/videos/${searchTerm}`
         );
         setSearchedVideo(response.data);
+        setLoading(false);
         setVideos([]);
         setError("");
       } catch (error) {
@@ -118,10 +123,20 @@ function App() {
       {searchedVideo ? (
         <div>
           <h2>Searched Video</h2>
-          <VideoCard handleTagClick={handleTagClick} video={searchedVideo} />
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <VideoCard handleTagClick={handleTagClick} video={searchedVideo} />
+          )}
         </div>
       ) : (
-        <VideoList handleTagClick={handleTagClick} videos={videos} />
+        <div>
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <VideoList handleTagClick={handleTagClick} videos={videos} />
+          )}
+        </div>
       )}
     </div>
   );
